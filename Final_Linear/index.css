@@ -1,0 +1,155 @@
+/* CSS Styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+}
+
+.card {
+    border: 2px solid #007bff;
+    border-radius: 15px;
+    padding: 20px;
+    width: 300px;
+    text-align: center;
+    background-color: #fff;
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-8px);
+}
+
+.card h2 {
+    color: #007bff;
+    margin-bottom: 10px;
+}
+
+.card img {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    margin-bottom: 20px;
+}
+
+/*เพิ่มข้อมูล*/
+button {
+    padding: 10px 50px;
+    font-size: 18px;
+    cursor: pointer;
+    background-color: #17a2b8;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    text-align: center;
+    text-decoration: none;
+    transition-duration: 0.4s;
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.1);
+    margin-top: 30px;
+}
+
+button:hover {
+    background-color: #138496;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.match-button {
+    padding: 20px 50px;
+    font-size: 18px;
+    background-color: #17a2b8;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    text-align: center;
+    text-decoration: none;
+    transition-duration: 0.4s;
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.1);
+    height: 60px;
+    width: 200px;
+    margin-top: 20px; /* เพิ่มช่องว่างด้านบน */
+}
+
+.match-button:hover {
+    background-color: #138496;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+
+/* Style for the data entry box */
+#dataEntry {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.2);
+    z-index: 999;
+    max-width: 400px;
+    width: 80%;
+}
+
+#dataEntry form {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#dataEntry label {
+    display: block;
+    margin-bottom: 1px;
+    font-weight: bold;
+    align-self: flex-start;
+}
+
+#dataEntry input[type="text"],
+#dataEntry input[type="file"],
+#dataEntry select {
+    width: calc(100% - 40px);
+    padding: 15px;
+    
+    border: 2px solid #007bff;
+    border-radius: 8px;
+    box-sizing: border-box;
+    align-self: flex-start;
+}
+
+/*ปุ่ม submit*/
+#dataEntry button[type="button"] {
+    width: 80%;
+    padding: 13px 0;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    text-align: center;
+    text-decoration: none;
+    transition-duration: 0.4s;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px; /* เพิ่มช่องว่างด้านล่าง */
+}
+
+
+#dataEntry button[type="button"]:hover {
+    background-color: #0056b3;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+
