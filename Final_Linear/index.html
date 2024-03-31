@@ -5,115 +5,149 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Matching Business and Interns</title>
 <style>
-    .container {
+    body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 0;
     display: flex;
-    flex-wrap: wrap;
     justify-content: center;
-    gap: 20px;
     align-items: center;
-    height: auto;
+    height: 100vh; /* ทำให้เต็มหน้าจอ */
 }
 
-.card {
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 20px;
-    width: 200px;
-    text-align: center;
-    margin-bottom: 20px;
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-.card img {
-    max-width: 100px;
-    max-height: 100px;
-    border-radius: 50%;
-    margin-bottom: 10px;
-}
+    .card {
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        padding: 20px;
+        width: 200px;
+        text-align: center;
+        margin-bottom: 20px;
+        background-color: #fff;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+    }
 
-button {
-    padding: 15px 35px;
-    font-size: 16px;
-    cursor: pointer;
-    background-color: #4CAF50; /* สีพื้นหลัง */
+    .card:hover {
+        transform: translateY(-5px);
+    }
+
+    .card h2 {
+        color: #333;
+    }
+
+    .card img {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        margin-bottom: 10px;
+    }
+
+    button {
+        padding: 13px 35px;
+        font-size: 16px;
+        cursor: pointer;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        transition-duration: 0.4s;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        margin-top: 20px;
+    }
+
+    button:hover {
+        background-color: #45a049;
+        box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    #dataEntry {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #f9f9f9;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+        z-index: 999;
+    }
+
+    form {
+        text-align: left;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 10px;
+        font-weight: bold;
+    }
+
+    input[type="text"],
+    input[type="file"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+    }
+
+    button[type="button"] {
+        padding: 13px 35px;
+        font-size: 16px;
+        cursor: pointer;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        text-align: center;
+        text-decoration: none;
+        display: block;
+        margin: auto;
+        transition-duration: 0.4s;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    button[type="button"]:hover {
+        background-color: #45a049;
+        box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    }
+    .match-button {
+    padding: 10px 20px; /* ปรับขนาดพื้นที่ภายในปุ่ม */
+    font-size: 14px; /* ปรับขนาดตัวอักษร */
+    background-color: #4CAF50; /* สีพื้นหลังปุ่ม */
     color: white; /* สีข้อความ */
     border: none;
-    border-radius: 8px; /* ขอบโค้ง */
+    border-radius: 5px; /* ขอบโค้ง */
     text-align: center;
     text-decoration: none;
     display: inline-block;
     transition-duration: 0.4s;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* เงา */
-    margin: 0 auto; /* จัดให้อยู่ตรงกลาง */
+    height: 50px;
 }
 
-button:hover {
-    background-color: #45a049; /* เมื่อ hover */
-    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2); /* เมื่อ hover */
+.match-button:hover {
+    background-color: #45a049; /* สีพื้นหลังเมื่อโฮเวอร์ */
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2); /* เงาเมื่อโฮเวอร์ */
 }
-#dataEntry {
-    display: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: #f9f9f9;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
-    z-index: 999;
-}
-
-form {
-    text-align: left; /* ปรับให้ข้อความอยู่ทางซ้าย */
-}
-
-label {
-    display: block;
-    margin-bottom: 10px;
-    font-weight: bold;
-}
-
-input[type="text"],
-input[type="file"] {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-sizing: border-box;
-}
-
-button[type="button"] {
-    padding: 15px 35px;
-    font-size: 16px;
-    cursor: pointer;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    text-align: center;
-    text-decoration: none;
-    display: block;
-    margin: auto; /* จัดให้อยู่ตรงกลาง */
-    transition-duration: 0.4s;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-button[type="button"]:hover {
-    background-color: #45a049;
-    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
-}
-
-
-
-
-
 
 </style>
 </head>
 <body>
     <!-- ปุ่มเพื่อเปิด/ปิดแบบฟอร์มกรอกข้อมูล -->
-    <div style="position: fixed; top: 0; right: 0;">
+    <div style="position: fixed; top: 20px; right: 20px;">
         <button onclick="toggleDataForm()">กรอกข้อมูล</button>
     </div>
 
@@ -147,23 +181,28 @@ button[type="button"]:hover {
             <p id="internInterest"></p>
         </div>
         <!-- ปุ่มเรียกใช้ฟังก์ชันการจับคู่ -->
-        <button onclick="match()">Matching</button>
+        <button class="match-button" onclick="match()">Matching</button>
+
     </div>
     
 
     <script>
         // ข้อมูลผู้ประกอบการและนักศึกษาฝึกงาน (ข้อมูลตัวอย่าง)
-        const business = [
-            { name: "Alice Johnson", expertise: ["Marketing", "Sales"], image: "1.jpg" },
-            { name: "Bob Williams", expertise: ["Design", "Technology"], image: "3.jpg" },
-            // เพิ่มผู้ประกอบการเพิ่มเติมตามต้องการ
-        ];
-    
-        const interns = [
-            { name: "Jane Johnson", interest: ["Marketing", "Sales"], image: "5.jpg" },
-            { name: "Carol Brown", interest: ["Design", "Technology"], image: "4.jpg" },
-            // เพิ่มนักศึกษาฝึกงานเพิ่มเติมตามต้องการ
-        ];
+const business = [
+    { name: "Alice Johnson", expertise: ["Marketing", "Sales"], image: "1.jpg" },
+    { name: "Bob Williams", expertise: ["Design", "Technology"], image: "3.jpg" },
+    // เพิ่มผู้ประกอบการเพิ่มเติมตามต้องการ
+];
+
+const interns = [
+    { name: "Jane Johnson", interest: ["Marketing", "Sales"], image: "5.jpg" },
+    { name: "Carol Brown", interest: ["Design", "Technology"], image: "4.jpg" },
+    // เพิ่มนักศึกษาฝึกงานเพิ่มเติมตามต้องการ
+];
+
+// เพิ่มการแสดงข้อมูลนักศึกษาและผู้ประกอบการเริ่มต้น
+displayMatch(business[0], interns[0]);
+
     
         // ฟังก์ชันสำหรับการสุ่มหมายเลขดัชนี
         function getRandomIndex(max) {
