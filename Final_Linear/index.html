@@ -3,31 +3,256 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Matching Entrepreneurs with Interns</title>
-<link rel="stylesheet" href="styles.css">
+<title>Matching Business and Interns</title>
+<style>
+    .container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    align-items: center;
+    height: auto;
+}
 
+.card {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 20px;
+    width: 200px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.card img {
+    max-width: 100px;
+    max-height: 100px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+
+button {
+    padding: 15px 35px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #4CAF50; /* สีพื้นหลัง */
+    color: white; /* สีข้อความ */
+    border: none;
+    border-radius: 8px; /* ขอบโค้ง */
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    transition-duration: 0.4s;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* เงา */
+    margin: 0 auto; /* จัดให้อยู่ตรงกลาง */
+}
+
+button:hover {
+    background-color: #45a049; /* เมื่อ hover */
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2); /* เมื่อ hover */
+}
+#dataEntry {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #f9f9f9;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+    z-index: 999;
+}
+
+form {
+    text-align: left; /* ปรับให้ข้อความอยู่ทางซ้าย */
+}
+
+label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="file"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+button[type="button"] {
+    padding: 15px 35px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    text-align: center;
+    text-decoration: none;
+    display: block;
+    margin: auto; /* จัดให้อยู่ตรงกลาง */
+    transition-duration: 0.4s;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+button[type="button"]:hover {
+    background-color: #45a049;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+
+
+
+
+
+</style>
 </head>
 <body>
-<div id="container">
-    <h2>Matching Entrepreneurs with Interns</h2>
-    <button onclick="matchPairs()">Match Pairs</button>
-    <button onclick="addBusiness()">Add Business</button>
-    <button onclick="removeBusiness()">Remove Business</button>
-    <button onclick="addIntern()">Add Intern</button>
-    <button onclick="removeIntern()">Remove Intern</button>
+    <!-- ปุ่มเพื่อเปิด/ปิดแบบฟอร์มกรอกข้อมูล -->
+    <div style="position: fixed; top: 0; right: 0;">
+        <button onclick="toggleDataForm()">กรอกข้อมูล</button>
+    </div>
 
-    <!-- ตัวอย่างการเพิ่มช่องกรอกข้อมูล -->
-    <div>
-        <label for="newBusinessName">Business Name:</label>
-        <input type="text" id="newBusinessName">
-        <button onclick="addBusinessWithInput()">Add Business with Input</button>
+    <!-- แบบฟอร์มกรอกข้อมูล -->
+    <div id="dataEntry" style="display: none;">
+        <form>
+            <label for="id">รหัส:</label><br>
+            <input type="text" id="id" name="id"><br>
+            <label for="name">ชื่อ:</label><br>
+            <input type="text" id="name" name="name"><br>
+            <label for="skills">ทักษะ:</label><br>
+            <input type="text" id="skills" name="skills"><br>
+            <label for="image">รูปภาพ:</label><br>
+            <input type="file" id="image" name="image"><br><br>
+            <button type="button" onclick="saveData(); toggleDataForm();">บันทึกข้อมูล</button>
+        </form>
+    </div>
+
+    <!-- การ์ดสำหรับแสดงผลผู้ประกอบการและนักศึกษาฝึกงานที่จับคู่กัน -->
+    <div class="container">
+        <div class="card" id="businessCard">
+            <h2>Business</h2>
+            <img id="businessImage" src="" alt="">
+            <p id="businessName"></p>
+            <p id="businessExpertise"></p>
+        </div>
+        <div class="card" id="internCard">
+            <h2>Intern</h2>
+            <img id="internImage" src="" alt="">
+            <p id="internName"></p>
+            <p id="internInterest"></p>
+        </div>
+        <!-- ปุ่มเรียกใช้ฟังก์ชันการจับคู่ -->
+        <button onclick="match()">Matching</button>
     </div>
     
-    <ul id="output"></ul>
-</div>
-<script src="index.js"></script>
+
+    <script>
+        // ข้อมูลผู้ประกอบการและนักศึกษาฝึกงาน (ข้อมูลตัวอย่าง)
+        const business = [
+            { name: "Alice Johnson", expertise: ["Marketing", "Sales"], image: "1.jpg" },
+            { name: "Bob Williams", expertise: ["Design", "Technology"], image: "3.jpg" },
+            // เพิ่มผู้ประกอบการเพิ่มเติมตามต้องการ
+        ];
+    
+        const interns = [
+            { name: "Jane Johnson", interest: ["Marketing", "Sales"], image: "5.jpg" },
+            { name: "Carol Brown", interest: ["Design", "Technology"], image: "4.jpg" },
+            // เพิ่มนักศึกษาฝึกงานเพิ่มเติมตามต้องการ
+        ];
+    
+        // ฟังก์ชันสำหรับการสุ่มหมายเลขดัชนี
+        function getRandomIndex(max) {
+            return Math.floor(Math.random() * max);
+        }
+    
+        // ฟังก์ชันสำหรับการจับคู่ผู้ประกอบการและนักศึกษาฝึกงาน
+        function match() {
+            const businessIndex = getRandomIndex(business.length);
+            const internIndex = getRandomIndex(interns.length);
+    
+            const selectedBusiness = business[businessIndex];
+            const selectedIntern = interns[internIndex];
+    
+            // แสดงผลการจับคู่
+            displayMatch(selectedBusiness, selectedIntern);
+        }
+    
+        // ฟังก์ชันสำหรับแสดงผลการจับคู่
+        function displayMatch(business, intern) {
+            document.getElementById("businessName").innerText = business.name;
+            document.getElementById("businessExpertise").innerText = "ความเชี่ยวชาญ: " + business.expertise.join(", ");
+            document.getElementById("businessImage").src = business.image;
+    
+            document.getElementById("internName").innerText = intern.name;
+            document.getElementById("internInterest").innerText = "ความสนใจ: " + intern.interest.join(", ");
+            document.getElementById("internImage").src = intern.image;
+        }
+    
+        // ฟังก์ชันสำหรับเปิด/ปิดแบบฟอร์มกรอกข้อมูล
+        function toggleDataForm() {
+            var dataForm = document.getElementById('dataEntry');
+            if (dataForm.style.display === 'none') {
+                dataForm.style.display = 'block';
+            } else {
+                dataForm.style.display = 'none';
+            }
+        }
+    
+        // ฟังก์ชันสำหรับการบันทึกข้อมูล
+        function saveData() {
+            // รับค่าจากแบบฟอร์ม
+            var id = document.getElementById('id').value;
+            var name = document.getElementById('name').value;
+            var skills = document.getElementById('skills').value;
+            var image = document.getElementById('image').files[0]; // รับไฟล์รูปภาพที่เลือก
+    
+            // เตรียมข้อมูลเป็นออบเจกต์
+            var data = {
+                id: id,
+                name: name,
+                skills: skills,
+                image: image.name // เก็บชื่อไฟล์ของรูปภาพ
+            };
+    
+            // บันทึกข้อมูลลงใน localStorage
+            var existingData = JSON.parse(localStorage.getItem('userData')) || { users: [] };
+            existingData.users.push(data);
+            localStorage.setItem('userData', JSON.stringify(existingData));
+    
+            // แจ้งเตือนบันทึกข้อมูลเสร็จสมบูรณ์
+            alert('บันทึกข้อมูลเรียบร้อยแล้ว');
+    
+            // สร้างข้อมูล JSON
+            var jsonData = JSON.stringify(existingData);
+    
+            // สร้าง Blob จากข้อมูล JSON
+            var blob = new Blob([jsonData], {type: "application/json"});
+    
+            // สร้าง URL สำหรับ Blob
+            var url = URL.createObjectURL(blob);
+    
+            // สร้าง element ปุ่มลิงก์
+            var a = document.createElement("a");
+            a.href = url;
+            a.download = "Data.json";
+            document.body.appendChild(a);
+    
+            // คลิกลิงก์เพื่อดาวน์โหลดไฟล์ JSON
+            a.click();
+    
+            // ทำความสะอาด
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+    
+            // เปิด/ปิดแบบฟอร์มกรอกข้อมูล
+            toggleDataForm();
+        }
+    </script>
+    
 </body>
 </html>
-
-
-
