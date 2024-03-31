@@ -5,30 +5,31 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Matching Business and Interns</title>
 <style>
+    /* CSS Styles */
     body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh; /* ทำให้เต็มหน้าจอ */
-}
+        font-family: Arial, sans-serif;
+        background-color: #f0f0f0;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
 
-.container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
+    .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+    }
 
     .card {
         border: 1px solid #ddd;
         border-radius: 10px;
         padding: 20px;
-        width: 200px;
+        width: 300px;
         text-align: center;
-        margin-bottom: 20px;
         background-color: #fff;
         box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
         transition: transform 0.3s ease;
@@ -40,11 +41,12 @@
 
     .card h2 {
         color: #333;
+        margin-bottom: 10px;
     }
 
     .card img {
-        width: 100px;
-        height: 100px;
+        width: 150px;
+        height: 150px;
         border-radius: 50%;
         margin-bottom: 10px;
     }
@@ -59,7 +61,6 @@
         border-radius: 8px;
         text-align: center;
         text-decoration: none;
-        display: inline-block;
         transition-duration: 0.4s;
         box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
         margin-top: 20px;
@@ -70,13 +71,34 @@
         box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
     }
 
+    .match-button {
+        padding: 10px 20px;
+        font-size: 16px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        text-align: center;
+        text-decoration: none;
+        transition-duration: 0.4s;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        height: 50px;
+        width: 200px;
+    }
+
+    .match-button:hover {
+        background-color: #45a049;
+        box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Style for the data entry box */
     #dataEntry {
         display: none;
         position: fixed;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        background-color: #f9f9f9;
+        background-color: #ffffff;
         padding: 30px;
         border-radius: 10px;
         box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
@@ -94,8 +116,9 @@
     }
 
     input[type="text"],
-    input[type="file"] {
-        width: 100%;
+    input[type="file"],
+    select {
+        width: calc(100% - 20px);
         padding: 10px;
         margin-bottom: 20px;
         border: 1px solid #ccc;
@@ -123,50 +146,60 @@
         background-color: #45a049;
         box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
     }
-    .match-button {
-    padding: 10px 20px; /* ปรับขนาดพื้นที่ภายในปุ่ม */
-    font-size: 14px; /* ปรับขนาดตัวอักษร */
-    background-color: #4CAF50; /* สีพื้นหลังปุ่ม */
-    color: white; /* สีข้อความ */
-    border: none;
-    border-radius: 5px; /* ขอบโค้ง */
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    transition-duration: 0.4s;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* เงา */
-    height: 50px;
-}
 
-.match-button:hover {
-    background-color: #45a049; /* สีพื้นหลังเมื่อโฮเวอร์ */
-    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2); /* เงาเมื่อโฮเวอร์ */
-}
+    /* Responsive design */
+    @media only screen and (max-width: 600px) {
+        .card {
+            width: 80%;
+        }
 
+        .card img {
+            width: 100px;
+            height: 100px;
+        }
+
+        button {
+            width: 80%;
+        }
+
+        .match-button {
+            width: 80%;
+        }
+
+        input[type="text"],
+        input[type="file"],
+        select {
+            width: calc(100% - 20px);
+        }
+    }
 </style>
 </head>
 <body>
     <!-- ปุ่มเพื่อเปิด/ปิดแบบฟอร์มกรอกข้อมูล -->
     <div style="position: fixed; top: 20px; right: 20px;">
-        <button onclick="toggleDataForm()">กรอกข้อมูล</button>
+        <button onclick="toggleDataForm()">เพิ่มข้อมูล</button>
     </div>
 
     <!-- แบบฟอร์มกรอกข้อมูล -->
     <div id="dataEntry" style="display: none;">
         <form>
-            <label for="id">รหัส:</label><br>
-            <input type="text" id="id" name="id"><br>
-            <label for="name">ชื่อ:</label><br>
+            <label for="type">ประเภท:</label><br>
+            <select id="type" name="type">
+                <option value="business">Business</option>
+                <option value="intern">Intern</option>
+            </select><br><br>
+
+            <label for="name">Name:</label><br>
             <input type="text" id="name" name="name"><br>
-            <label for="skills">ทักษะ:</label><br>
+            <label for="skills">Skills:</label><br>
             <input type="text" id="skills" name="skills"><br>
-            <label for="image">รูปภาพ:</label><br>
+            <label for="image">Image:</label><br>
             <input type="file" id="image" name="image"><br><br>
-            <button type="button" onclick="saveData(); toggleDataForm();">บันทึกข้อมูล</button>
+            <button type="button" onclick="saveData();">Submit</button>
         </form>
     </div>
 
-    <!-- การ์ดสำหรับแสดงผลผู้ประกอบการและนักศึกษาฝึกงานที่จับคู่กัน -->
+    <!-- การ์ดสำหรับแสดงผลผู้ประกอบการและนักศึกษาฝึกงานที่จับคู่ -->
     <div class="container">
         <div class="card" id="businessCard">
             <h2>Business</h2>
@@ -174,124 +207,148 @@
             <p id="businessName"></p>
             <p id="businessExpertise"></p>
         </div>
+
         <div class="card" id="internCard">
             <h2>Intern</h2>
             <img id="internImage" src="" alt="">
             <p id="internName"></p>
             <p id="internInterest"></p>
         </div>
-        <!-- ปุ่มเรียกใช้ฟังก์ชันการจับคู่ -->
-        <button class="match-button" onclick="match()">Matching</button>
-
     </div>
-    
+    <!-- ปุ่มเรียกใช้ฟังก์ชันการจับคู่ -->
+    <button class="match-button" onclick="match()">Matching</button>
 
-    <script>
-        // ข้อมูลผู้ประกอบการและนักศึกษาฝึกงาน (ข้อมูลตัวอย่าง)
+<script>
+    // ข้อมูลผู้ประกอบการและนักศึกษาฝึกงาน (ข้อมูลตัวอย่าง)
 const business = [
-    { name: "Alice Johnson", expertise: ["Marketing", "Sales"], image: "1.jpg" },
+    { name: "Alice John", expertise: ["Marketing", "Sales"], image: "1.jpg" },
     { name: "Bob Williams", expertise: ["Design", "Technology"], image: "3.jpg" },
+    { name: "Charlie Brown", expertise: ["Finance", "Management"], image: "6.jpg" },
+    { name: "Diana Smith", expertise: ["HR", "Operations"], image: "7.jpg" },
+    { name: "Eva Martinez", expertise: ["Product Management", "Analytics"], image: "8.jpg" }
     // เพิ่มผู้ประกอบการเพิ่มเติมตามต้องการ
 ];
 
 const interns = [
     { name: "Jane Johnson", interest: ["Marketing", "Sales"], image: "5.jpg" },
     { name: "Carol Brown", interest: ["Design", "Technology"], image: "4.jpg" },
+    { name: "Franklin Lee", interest: ["Finance", "Accounting"], image: "9.jpg" },
+    { name: "Grace Taylor", interest: ["Data Science", "Machine Learning"], image: "10.jpg" },
+    { name: "Hannah White", interest: ["Digital Marketing", "Content Creation"], image: "2.jpg" }
     // เพิ่มนักศึกษาฝึกงานเพิ่มเติมตามต้องการ
 ];
 
-// เพิ่มการแสดงข้อมูลนักศึกษาและผู้ประกอบการเริ่มต้น
-displayMatch(business[0], interns[0]);
+// ฟังก์ชันสำหรับการจับคู่ผู้ประกอบการและนักศึกษาฝึกงาน
+function match() {
+    const businessIndex = getRandomIndex(business.length);
+    const internIndex = getRandomIndex(interns.length);
 
-    
-        // ฟังก์ชันสำหรับการสุ่มหมายเลขดัชนี
-        function getRandomIndex(max) {
-            return Math.floor(Math.random() * max);
-        }
-    
-        // ฟังก์ชันสำหรับการจับคู่ผู้ประกอบการและนักศึกษาฝึกงาน
-        function match() {
-            const businessIndex = getRandomIndex(business.length);
-            const internIndex = getRandomIndex(interns.length);
-    
-            const selectedBusiness = business[businessIndex];
-            const selectedIntern = interns[internIndex];
-    
-            // แสดงผลการจับคู่
-            displayMatch(selectedBusiness, selectedIntern);
-        }
-    
-        // ฟังก์ชันสำหรับแสดงผลการจับคู่
-        function displayMatch(business, intern) {
-            document.getElementById("businessName").innerText = business.name;
-            document.getElementById("businessExpertise").innerText = "ความเชี่ยวชาญ: " + business.expertise.join(", ");
-            document.getElementById("businessImage").src = business.image;
-    
-            document.getElementById("internName").innerText = intern.name;
-            document.getElementById("internInterest").innerText = "ความสนใจ: " + intern.interest.join(", ");
-            document.getElementById("internImage").src = intern.image;
-        }
-    
-        // ฟังก์ชันสำหรับเปิด/ปิดแบบฟอร์มกรอกข้อมูล
-        function toggleDataForm() {
-            var dataForm = document.getElementById('dataEntry');
-            if (dataForm.style.display === 'none') {
-                dataForm.style.display = 'block';
-            } else {
-                dataForm.style.display = 'none';
-            }
-        }
-    
-        // ฟังก์ชันสำหรับการบันทึกข้อมูล
-        function saveData() {
-            // รับค่าจากแบบฟอร์ม
-            var id = document.getElementById('id').value;
-            var name = document.getElementById('name').value;
-            var skills = document.getElementById('skills').value;
-            var image = document.getElementById('image').files[0]; // รับไฟล์รูปภาพที่เลือก
-    
-            // เตรียมข้อมูลเป็นออบเจกต์
-            var data = {
-                id: id,
-                name: name,
-                skills: skills,
-                image: image.name // เก็บชื่อไฟล์ของรูปภาพ
-            };
-    
-            // บันทึกข้อมูลลงใน localStorage
-            var existingData = JSON.parse(localStorage.getItem('userData')) || { users: [] };
-            existingData.users.push(data);
-            localStorage.setItem('userData', JSON.stringify(existingData));
-    
-            // แจ้งเตือนบันทึกข้อมูลเสร็จสมบูรณ์
-            alert('บันทึกข้อมูลเรียบร้อยแล้ว');
-    
-            // สร้างข้อมูล JSON
-            var jsonData = JSON.stringify(existingData);
-    
-            // สร้าง Blob จากข้อมูล JSON
-            var blob = new Blob([jsonData], {type: "application/json"});
-    
-            // สร้าง URL สำหรับ Blob
-            var url = URL.createObjectURL(blob);
-    
-            // สร้าง element ปุ่มลิงก์
-            var a = document.createElement("a");
-            a.href = url;
-            a.download = "Data.json";
-            document.body.appendChild(a);
-    
-            // คลิกลิงก์เพื่อดาวน์โหลดไฟล์ JSON
-            a.click();
-    
-            // ทำความสะอาด
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-    
-            // เปิด/ปิดแบบฟอร์มกรอกข้อมูล
-            toggleDataForm();
-        }
-    </script>
-    
+    const selectedBusiness = business[businessIndex];
+    const selectedIntern = interns[internIndex];
+
+    // แสดงผลการจับคู่
+    displayMatch(selectedBusiness, selectedIntern);
+}
+
+// ฟังก์ชันสำหรับการแสดงผลผู้ประกอบการและนักศึกษาฝึกงาน
+function displayMatch(business, intern) {
+    document.getElementById("businessName").innerText = business.name;
+    document.getElementById("businessExpertise").innerText = "Skill: " + business.expertise.join(", ");
+    document.getElementById("businessImage").src = business.image;
+
+    document.getElementById("internName").innerText = intern.name;
+    document.getElementById("internInterest").innerText = "Skill: " + intern.interest.join(", ");
+    document.getElementById("internImage").src = intern.image;
+}
+
+// ฟังก์ชันสำหรับเปิด/ปิดแบบฟอร์มกรอกข้อมูล
+function toggleDataForm() {
+    var dataForm = document.getElementById('dataEntry');
+    if (dataForm.style.display === 'none' || dataForm.style.display === '') {
+        dataForm.style.display = 'block';
+    } else {
+        dataForm.style.display = 'none';
+    }
+}
+
+// ฟังก์ชันสำหรับแสดงข้อมูลที่เพิ่มมาใหม่
+function displayNewData(data) {
+    var newDataCard = document.createElement('div');
+    newDataCard.className = 'card';
+
+    var nameHeading = document.createElement('h2');
+    nameHeading.textContent = data.name;
+
+    var skillsParagraph = document.createElement('p');
+    skillsParagraph.textContent = 'Skills: ' + data.skills;
+
+    var imageElement = document.createElement('img');
+    imageElement.src = data.image; // ใช้ URL ของรูปภาพที่ได้จากข้อมูล
+
+    // สร้างปุ่ม "ลบ" และกำหนดคำสั่งให้เรียกใช้ฟังก์ชัน deleteData() เมื่อคลิก
+    var deleteButton = document.createElement('button');
+    deleteButton.textContent = 'ลบ';
+    deleteButton.setAttribute('onclick', 'deleteData(this)');
+
+    newDataCard.appendChild(nameHeading);
+    newDataCard.appendChild(imageElement);
+    newDataCard.appendChild(skillsParagraph);
+    newDataCard.appendChild(deleteButton); // เพิ่มปุ่ม "ลบ" เข้าไปในการ์ด
+
+    document.querySelector('.container').appendChild(newDataCard);
+}
+
+// ฟังก์ชันสำหรับลบข้อมูล
+function deleteData(button) {
+    var card = button.parentElement; // ดึงข้อมูลการ์ดที่ต้องการลบ
+    var cardType = card.id.includes("business") ? "business" : "intern"; // ตรวจสอบประเภทของการ์ด
+
+    // ตรวจสอบประเภทของการ์ดและลบข้อมูลออกจากอาร์เรย์ของข้อมูล
+    if (cardType === "business") {
+        business.splice(0, 1); // ลบข้อมูลผู้ประกอบการที่อยู่ที่ตำแหน่งแรกของอาร์เรย์
+    } else {
+        interns.splice(0, 1); // ลบข้อมูลนักศึกษาฝึกงานที่อยู่ที่ตำแหน่งแรกของอาร์เรย์
+    }
+
+    card.remove(); // ลบการ์ดที่ต้องการลบออกจาก DOM
+}
+
+// ฟังก์ชันสำหรับการบันทึกข้อมูล
+function saveData() {
+    // รับค่าจากแบบฟอร์ม
+    var type = document.getElementById('type').value;
+    var name = document.getElementById('name').value;
+    var skills = document.getElementById('skills').value;
+    var image = document.getElementById('image').files[0]; // รับไฟล์รูปภาพที่เลือก
+
+    // สร้างออบเจกต์เพื่อเก็บข้อมูล
+    var data = {
+        name: name,
+        skills: skills,
+        image: URL.createObjectURL(image) // เปลี่ยนเป็น URL ของไฟล์รูปภาพ
+    };
+
+    // ตรวจสอบประเภทข้อมูลและเพิ่มเข้าในอาร์เรย์ที่เหมาะสม
+    if (type === 'business') {
+        business.push(data);
+    } else if (type === 'intern') {
+        interns.push(data);
+    }
+
+    // แสดงข้อมูลที่เพิ่มเข้ามาใหม่
+    displayNewData(data);
+
+    // ซ่อนกล่องกรอกข้อมูล
+    toggleDataForm();
+
+    // สุ่มใหม่เมื่อมีการเพิ่มข้อมูล
+    match();
+}
+
+// ฟังก์ชันสำหรับการสุ่มหมายเลขดัชนี
+function getRandomIndex(max) {
+    return Math.floor(Math.random() * max);
+}
+</script>
 </body>
 </html>
